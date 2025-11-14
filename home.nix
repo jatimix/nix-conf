@@ -32,18 +32,23 @@ in
     enable = true;
     shellAliases = {
       tree ="lsd --tree";
+      la = "lsd -la";
     };
+    ShellInit = ''
+      function track_directories --on-event fish_postexec; printf '\e]51;A'(pwd)'\e\\'; end
+    '';
     interactiveShellInit = ''
       # rebind M-p and M-n to behave like Zsh  instead of adding "&| less"
       # at the end of every command
       bind \ep up-or-search
       bind \en down-or-search
-      starship init fish | source
+      set fish_greeting
     '';
   };
 
   programs.starship = {
     enable = true;
+    enableFishIntegration = true;
     settings = {
       add_newline = false;
     };
@@ -56,5 +61,6 @@ in
   home.packages = with pkgs; [
     lsd
     starship
+    emacs
   ];
 }

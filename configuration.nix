@@ -7,7 +7,7 @@ in
 {
   imports = [
     # include NixOS-WSL modules
-    <nixos-wsl/modules>
+    nixos-wsl.nixosModules.wsl
   ];
 
   wsl.enable = true;

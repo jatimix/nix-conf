@@ -14,9 +14,9 @@ in
 
   programs.git = {
     enable = true;
-    userName = if isWork then "Timothee Bineau" else "Tim";
-    userEmail = if isWork then "REDACTED_EMAIL" else "jatimix@gmail.com";
-    extraConfig = {
+    settings = {
+      user.name = if isWork then "Timothee Bineau" else "Tim";
+      user.email = if isWork then "REDACTED_EMAIL" else "jatimix@gmail.com";
       pull.rebase = "true";
       core.autocrlf = "input";
       init.defaultBranch = "master";

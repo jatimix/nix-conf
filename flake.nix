@@ -11,7 +11,10 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-wsl, emacs-overlay }: {
+  outputs = { self, nixpkgs, home-manager, nixos-wsl, emacs-overlay }: let
+    system = "x86_64-linux";
+    pkgs = import nixpkgs { inherit system; };
+  in {
     nixosConfigurations = {
       nagra-wsl = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -49,5 +52,7 @@
         ];
       };
     };
+
+    packages.${system}.default = pkgs.hello;
   };
 }

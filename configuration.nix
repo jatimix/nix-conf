@@ -6,7 +6,7 @@ let
 in
 {
   wsl.enable = true;
-  wsl.defaultUser = "nixos";
+  wsl.defaultUser = username;
 
   users.users.${username} = {
     isNormalUser = true;

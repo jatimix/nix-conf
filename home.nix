@@ -31,8 +31,6 @@ in
   programs.fish = {
     enable = true;
     shellAliases = {
-      ls = "lsd";
-      ll = "lsd -la";
       tree ="lsd --tree";
     };
     interactiveShellInit = ''

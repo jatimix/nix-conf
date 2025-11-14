@@ -33,7 +33,6 @@ in
     shellAliases = {
       ls = "lsd";
       ll = "lsd -la";
-      la = "ls -la";
       tree ="lsd --tree";
     };
     interactiveShellInit = ''

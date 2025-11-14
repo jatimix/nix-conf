@@ -16,9 +16,11 @@ in
     enable = true;
     userName = if isWork then "Timothee Bineau" else "Tim";
     userEmail = if isWork then "REDACTED_EMAIL" else "jatimix@gmail.com";
-    autocrlf = "input";
-    rebase = true;
-    defaultBranch = "master";
+    extraConfig = {
+      pull.rebase = "true";
+      core.autocrlf = "input";
+      init.defaultBranch = "master";
+    };
   };
 
   programs.emacs = {

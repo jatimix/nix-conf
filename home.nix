@@ -54,7 +54,6 @@ in
 
   programs.lsd = {
     enable = true;
-    enableAliases = true;
   };
 
   home.packages = with pkgs; [

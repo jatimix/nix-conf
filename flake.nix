@@ -52,7 +52,5 @@
         ];
       };
     };
-
-    packages.${system}.default = pkgs.hello;
   };
 }

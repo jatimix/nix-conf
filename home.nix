@@ -34,7 +34,7 @@ in
       tree ="lsd --tree";
       la = "lsd -la";
     };
-    ShellInit = ''
+    shellInit = ''
       function track_directories --on-event fish_postexec; printf '\e]51;A'(pwd)'\e\\'; end
     '';
     interactiveShellInit = ''

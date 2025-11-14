@@ -34,11 +34,11 @@ in
       la = "ls -la";
       tree ="lsd --tree";
     };
-    bindings = {
-      "\ep" = "up-or-search";
-      "\en" = "down-or-search";
-    };
     interactiveShellInit = ''
+      # rebind M-p and M-n to behave like Zsh  instead of adding "&| less"
+      # at the end of every command
+      bind \ep up-or-search
+      bind \en down-or-search
       starship init fish | source
     '';
   };

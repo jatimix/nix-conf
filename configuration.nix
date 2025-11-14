@@ -7,12 +7,18 @@ in
 {
   wsl.enable = true;
   wsl.defaultUser = username;
+  nixpkgs.config.allowUnfree = true;
 
   users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.fish;
   };
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+  ];
 
   programs.fish.enable = true;
   time.timeZone = "Europe/Paris";

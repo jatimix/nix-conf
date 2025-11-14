@@ -1,4 +1,4 @@
-{ config, pkgs, lib, osConfig, ... }:
+{ config, pkgs, lib, osConfig, inputs,  ... }:
 
 let
   hostname = osConfig.networking.hostName;
@@ -6,9 +6,13 @@ let
   username = if isWork then "bineau" else "tim";
 in
 {
+  imports = [
+    inputs.nix-doom-emacs-unstraightened.homeModule
+  ];
+
   home.username = username;
   home.homeDirectory = "/home/${username}";
-  home.stateVersion = "24.05";
+  home.stateVersion = "25.05";
 
   programs.home-manager.enable = true;
 
@@ -28,11 +32,17 @@ in
     package = pkgs.emacs-git;
   };
 
+  programs.doom-emacs = {
+    enable = true;
+    doomDir = inputs.doom-config;  # or e.g. `./doom.d` for a local configuration
+    provideEmacs = false; # comes from git
+  };
+
   programs.fish = {
     enable = true;
     shellAliases = {
       tree ="lsd --tree";
-      la = "lsd -la";
+      la = lib.mkForce "lsd -la";
     };
     shellInit = ''
       function track_directories --on-event fish_postexec; printf '\e]51;A'(pwd)'\e\\'; end
@@ -61,6 +71,5 @@ in
   home.packages = with pkgs; [
     lsd
     starship
-    emacs
   ];
 }

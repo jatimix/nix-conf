@@ -8,6 +8,7 @@ in
   wsl.enable = true;
   wsl.defaultUser = username;
   nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = "nix-command flakes";
 
   users.users.${username} = {
     isNormalUser = true;

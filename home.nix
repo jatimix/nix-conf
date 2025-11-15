@@ -65,6 +65,13 @@ in
     '';
   };
 
+  programs.docker-cli = {
+    enable = true;
+    settings = {
+      "detachKeys" = "ctrl-e,e";
+    };
+  };
+
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
@@ -72,6 +79,10 @@ in
       add_newline = false;
     };
   };
+
+  # programs.ssh = {
+  #   enable = true;
+  # };
 
   programs.lsd = {
     enable = true;

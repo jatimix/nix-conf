@@ -12,7 +12,7 @@ in
 
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
     shell = pkgs.fish;
   };
 
@@ -21,7 +21,18 @@ in
     nerd-fonts.droid-sans-mono
   ];
 
+  virtualisation.docker.enable = true;
+  virtualisation.docker.daemon.settings = {
+    userland-proxy = false;
+    experimental = true;
+    ipv6 = true;
+    fixed-cidr-v6 = "fd00::/80";
+  };
+
   programs.fish.enable = true;
+
+  programs.ssh.startAgent = true;
+
   time.timeZone = "Europe/Paris";
 
   environment.systemPackages = with pkgs; [

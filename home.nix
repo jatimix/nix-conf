@@ -35,7 +35,16 @@ in
   programs.doom-emacs = {
     enable = true;
     doomDir = inputs.doom-config;  # or e.g. `./doom.d` for a local configuration
+    doomLocalDir = "/home/${username}/.doom.d";
     provideEmacs = false; # comes from git
+    extraPackages = epkgs:
+      with epkgs; [
+        vterm
+        sqlite3
+        emacsql
+        treesit-grammars.with-all-grammars
+        mu4e
+      ];
   };
 
   programs.fish = {
@@ -71,5 +80,10 @@ in
   home.packages = with pkgs; [
     lsd
     starship
+    ripgrep
+    fd
+    nixfmt
+    p7zip
+    dockerfile-language-server
   ];
 }

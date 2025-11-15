@@ -41,7 +41,6 @@
           inputs.nixos-wsl.nixosModules.wsl
           ./configuration.nix
           home-manager.nixosModules.home-manager
-          inputs.nix-doom-emacs-unstraightened.homeModule
           {
             nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
             networking.hostName = "giedi-wsl";

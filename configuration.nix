@@ -8,7 +8,10 @@ in
   wsl.enable = true;
   wsl.defaultUser = username;
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = "nix-command flakes";
+  nix.settings = {
+    experimental-features = "nix-command flakes";
+    trusted-users = [ "root" username ]; # Allow this user to modify and access nix store
+  };
 
   users.users.${username} = {
     isNormalUser = true;
@@ -21,17 +24,20 @@ in
     nerd-fonts.droid-sans-mono
   ];
 
-  virtualisation.docker.enable = true;
-  virtualisation.docker.daemon.settings = {
-    userland-proxy = false;
-    experimental = true;
-    ipv6 = true;
-    fixed-cidr-v6 = "fd00::/80";
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      userland-proxy = false;
+      experimental = true;
+      ipv6 = true;
+      fixed-cidr-v6 = "fd00::/80";
+    };
   };
 
-  programs.fish.enable = true;
-
-  programs.ssh.startAgent = true;
+  programs = {
+    fish.enable = true;
+    ssh.startAgent = true;
+  };
 
   time.timeZone = "Europe/Paris";
 

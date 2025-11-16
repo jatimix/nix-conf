@@ -29,7 +29,15 @@ in
 
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs-git;
+    #   package = pkgs.emacs-git;
+    package = pkgs.emacs-git.overrideAttrs (old: {
+      src = inputs.emacs-igc-src;
+      buildInputs = old.buildInputs ++ [ pkgs.mps ];
+      configureFlags = old.configureFlags ++ [
+        "--with-mps=yes"
+      ];
+    });
+    extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
   };
 
   programs.doom-emacs = {
@@ -52,6 +60,7 @@ in
     shellAliases = {
       tree ="lsd --tree";
       la = lib.mkForce "lsd -la";
+      top = "htop";
     };
     shellInit = ''
       function track_directories --on-event fish_postexec; printf '\e]51;A'(pwd)'\e\\'; end
@@ -96,5 +105,8 @@ in
     nixfmt
     p7zip
     dockerfile-language-server
+    htop
+    devenv
+    wild
   ];
 }

@@ -10,8 +10,17 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     nix-doom-emacs-unstraightened.url = "github:marienz/nix-doom-emacs-unstraightened";
-    doom-config.url = "github:jatimix/doom-conf";
-    doom-config.flake = false;
+    doom-config = {
+      url = "github:jatimix/doom-conf";
+      flake = false;
+    };
+    emacs-igc-src = {
+      url = "github:emacs-mirror/emacs/feature/igc";
+      flake = false;
+    };
+    wild-linker = {
+      url = "github:davidlattimore/wild";
+    };
   };
 
   outputs = inputs @ { nixpkgs, home-manager, ... }: {

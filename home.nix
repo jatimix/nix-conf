@@ -25,6 +25,25 @@ in
       core.autocrlf = "input";
       init.defaultBranch = "master";
     };
+    ignores = [
+      ".DS_Store"
+      ".idea"
+      "*.log"
+      "tmp/"
+      ".dir-locals.el"
+      "*.tern-port"
+      "node_modules/"
+      "npm-debug.log*"
+      "yarn-debug.log*"
+      "yarn-error.log*"
+      "*.tsbuildinfo"
+      ".npm"
+      ".eslintcache"
+      ".log"
+      "__build"
+      "__build/*"
+      "build/"
+    ];
   };
 
   programs.emacs = {
@@ -88,10 +107,6 @@ in
       add_newline = false;
     };
   };
-
-  # programs.ssh = {
-  #   enable = true;
-  # };
 
   programs.lsd = {
     enable = true;

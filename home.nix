@@ -1,4 +1,4 @@
-{ config, pkgs, lib, osConfig, inputs,  ... }:
+{ config, pkgs, lib, osConfig, inputs, ... }:
 
 let
   hostname = osConfig.networking.hostName;
@@ -10,6 +10,16 @@ in
     inputs.nix-doom-emacs-unstraightened.homeModule
   ];
 
+  sops = lib.mkIf isWork {
+    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+    defaultSopsFile = ./secrets/work.yaml;
+    defaultSopsFormat = "yaml";  # <- Add this line
+    secrets.work_gitconfig = {
+      path = "${config.home.homeDirectory}/.config/git/work.inc";
+      format = "yaml";  # <- Add this line
+    };
+  };
+
   home.username = username;
   home.homeDirectory = "/home/${username}";
   home.stateVersion = "25.05";
@@ -19,11 +29,14 @@ in
   programs.git = {
     enable = true;
     settings = {
-      user.name = if isWork then "Timothee Bineau" else "Tim";
-      user.email = if isWork then "REDACTED_EMAIL" else "jatimix@gmail.com";
+      user.name = if isWork then "" else "Tim";
+      user.email = if isWork then "" else "jatimix@gmail.com";
       pull.rebase = "true";
       core.autocrlf = "input";
       init.defaultBranch = "master";
+    };
+    includes = lib.optional isWork {
+      path = "~/.config/git/work.inc";
     };
     ignores = [
       ".DS_Store"
@@ -58,6 +71,7 @@ in
     });
     extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
   };
+  services.emacs.defaultEditor = true;
 
   programs.doom-emacs = {
     enable = true;

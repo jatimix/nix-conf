@@ -21,14 +21,19 @@
     wild-linker = {
       url = "github:davidlattimore/wild";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ { nixpkgs, home-manager, ... }: {
     nixosConfigurations = {
       nagra-wsl = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [
-          inputs.nixos-wsl.nixosModules.wsl
+        modules = with inputs; [
+          sops-nix.nixosModules.sops
+          nixos-wsl.nixosModules.wsl
           ./configuration.nix
           home-manager.nixosModules.home-manager
           {
@@ -39,6 +44,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.bineau = import ./home.nix;
+              sharedModules = [ sops-nix.homeManagerModules.sops ];
             };
           }
         ];
@@ -46,8 +52,8 @@
 
       home-wsl = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [
-          inputs.nixos-wsl.nixosModules.wsl
+        modules = with inputs; [
+          nixos-wsl.nixosModules.wsl
           ./configuration.nix
           home-manager.nixosModules.home-manager
           {
@@ -58,6 +64,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.tim = import ./home.nix;
+              sharedModules = [ sops-nix.homeManagerModules.sops ];
             };
           }
         ];

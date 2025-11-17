@@ -1,8 +1,8 @@
 keys:
-  - &host_nagra_wsl age1p4w24358n4u0dej3gnlj6da5qtrpev6rgw2fs07kghp845t2wcdss2hhad
+  - &host_work_wsl age1p4w24358n4u0dej3gnlj6da5qtrpev6rgw2fs07kghp845t2wcdss2hhad
 
 creation_rules:
   - path_regex: secrets/.*\.yaml$
     key_groups:
       - age:
-          - *host_nagra_wsl
+          - *host_work_wsl

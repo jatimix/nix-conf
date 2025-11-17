@@ -3,6 +3,7 @@ keys:
 
 creation_rules:
   - path_regex: secrets/.*\.yaml$
+    encrypted_regex: ".*"
     key_groups:
       - age:
           - *host_work_wsl

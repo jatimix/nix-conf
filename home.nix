@@ -71,7 +71,6 @@ in
     });
     extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
   };
-  services.emacs.defaultEditor = true;
 
   programs.doom-emacs = {
     enable = true;
@@ -86,6 +85,10 @@ in
         treesit-grammars.with-all-grammars
         mu4e
       ];
+  };
+
+  home.sessionVariables = {
+    EDITOR = "doom-emacs";
   };
 
   programs.fish = {
@@ -130,6 +133,7 @@ in
   };
 
   home.packages = with pkgs; [
+    sops
     grc
     lsd
     starship

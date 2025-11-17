@@ -5,8 +5,14 @@ let
   username = if isWork then "bineau" else "tim";
 in
 {
-  wsl.enable = true;
-  wsl.defaultUser = username;
+  wsl = {
+    enable = true;
+    defaultUser = username;
+    interop.includePath = false; # remove windows PATH
+    wslConf.user.default = username; # start WSL as this user
+    useWindowsDriver = true;
+  };
+
   nixpkgs.config.allowUnfree = true;
   nix.settings = {
     experimental-features = "nix-command flakes";

@@ -82,6 +82,7 @@ in
       top = "htop";
     };
     shellInit = ''
+      # emacs vterm directory tracking... to-check
       function track_directories --on-event fish_postexec; printf '\e]51;A'(pwd)'\e\\'; end
     '';
     interactiveShellInit = ''
@@ -89,8 +90,10 @@ in
       # at the end of every command
       bind \ep up-or-search
       bind \en down-or-search
+      bind alt-backspace 'backward-kill-word'
       set fish_greeting
     '';
+    plugins = with pkgs.fishPlugins; [ {name = "grc"; src = grc.src;} ];
   };
 
   programs.docker-cli = {
@@ -113,6 +116,7 @@ in
   };
 
   home.packages = with pkgs; [
+    grc
     lsd
     starship
     ripgrep
@@ -121,7 +125,7 @@ in
     p7zip
     dockerfile-language-server
     htop
-    devenv
+    direnv
     wild
   ];
 }

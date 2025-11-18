@@ -20,8 +20,10 @@ in
   programs.git = {
     enable = true;
     settings = {
-      user.name = if isWork then "" else "Tim";
-      user.email = if isWork then "" else "jatimix@gmail.com";
+      user = lib.mkIf (!isWork) {
+        name = "Tim";
+        email = "jatimix@gmail.com";
+      };
       pull.rebase = "true";
       core.autocrlf = "input";
       init.defaultBranch = "master";
@@ -80,6 +82,7 @@ in
 
   home.sessionVariables = {
     EDITOR = "doom-emacs";
+    DEFAULT_BROWSER = "firefox";
   };
 
   programs.fish = {
@@ -137,6 +140,11 @@ in
     htop
     direnv
     wild
+    # This is specific for wsl
+    # If we want to switch to a non wsl thinggy it needs to be removed
+    (pkgs.writeShellScriptBin "firefox" ''
+       exec "/mnt/c/Program Files/Mozilla Firefox/firefox.exe" "$@"
+      '')
   ] ++ lib.optionals isWork [
     awscli2
   ];

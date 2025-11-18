@@ -10,7 +10,7 @@ in
     defaultUser = username;
     interop.includePath = false; # remove windows PATH
     wslConf.user.default = username; # start WSL as this user
-    useWindowsDriver = true;
+    #useWindowsDriver = true;
   };
 
   nixpkgs.config.allowUnfree = true;

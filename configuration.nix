@@ -48,6 +48,7 @@ in
   time.timeZone = "Europe/Paris";
 
   environment.systemPackages = with pkgs; [
+    killall
     git
     wget
     curl

@@ -8,17 +8,8 @@ in
 {
   imports = [
     inputs.nix-doom-emacs-unstraightened.homeModule
+    (import ./secrets.nix { inherit config lib pkgs isWork; })
   ];
-
-  sops = lib.mkIf isWork {
-    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets/work.yaml;
-    defaultSopsFormat = "yaml";  # <- Add this line
-    secrets.work_gitconfig = {
-      path = "${config.home.homeDirectory}/.config/git/work.inc";
-      format = "yaml";  # <- Add this line
-    };
-  };
 
   home.username = username;
   home.homeDirectory = "/home/${username}";
@@ -109,6 +100,7 @@ in
       bind \en down-or-search
       bind alt-backspace 'backward-kill-word'
       set fish_greeting
+      set -gx READ_REG_TOKEN "$(cat ${config.sops.secrets.read_reg_token.path})"
     '';
     plugins = with pkgs.fishPlugins; [ {name = "grc"; src = grc.src;} ];
   };
@@ -145,5 +137,7 @@ in
     htop
     direnv
     wild
+  ] ++ lib.optionals isWork [
+    awscli2
   ];
 }

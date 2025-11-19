@@ -1,4 +1,11 @@
-{ config, pkgs, lib, osConfig, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  osConfig,
+  inputs,
+  ...
+}:
 
 let
   hostname = osConfig.networking.hostName;
@@ -8,7 +15,14 @@ in
 {
   imports = [
     inputs.nix-doom-emacs-unstraightened.homeModule
-    (import ./secrets.nix { inherit config lib pkgs isWork; })
+    (import ./secrets.nix {
+      inherit
+        config
+        lib
+        pkgs
+        isWork
+        ;
+    })
   ];
 
   home.username = username;
@@ -27,6 +41,7 @@ in
       pull.rebase = "true";
       core.autocrlf = "input";
       init.defaultBranch = "master";
+      push.autoSetupRemote = "true";
     };
     includes = lib.optional isWork {
       path = "~/.config/git/work.inc";
@@ -67,11 +82,11 @@ in
 
   programs.doom-emacs = {
     enable = true;
-    doomDir = inputs.doom-config;  # or e.g. `./doom.d` for a local configuration
+    doomDir = inputs.doom-config; # or e.g. `./doom.d` for a local configuration
     doomLocalDir = "/home/${username}/.doom.d";
     provideEmacs = false; # comes from git
-    extraPackages = epkgs:
-      with epkgs; [
+    extraPackages =
+      epkgs: with epkgs; [
         vterm
         sqlite3
         emacsql
@@ -88,9 +103,10 @@ in
   programs.fish = {
     enable = true;
     shellAliases = {
-      tree ="lsd --tree";
+      tree = "lsd --tree";
       la = lib.mkForce "lsd -la";
       top = "htop";
+      emacs = "doom-emacs";
     };
     shellInit = ''
       # emacs vterm directory tracking... to-check
@@ -103,9 +119,14 @@ in
       bind \en down-or-search
       bind alt-backspace 'backward-kill-word'
       set fish_greeting
-      set -gx READ_REG_TOKEN "$(cat ${config.sops.secrets.read_reg_token.path})"
     '';
-    plugins = with pkgs.fishPlugins; [ {name = "grc"; src = grc.src;} ];
+    # set -gx READ_REG_TOKEN "$(cat ${config.sops.secrets.read_reg_token.path})"
+    plugins = with pkgs.fishPlugins; [
+      {
+        name = "grc";
+        src = grc.src;
+      }
+    ];
   };
 
   programs.docker-cli = {
@@ -127,25 +148,32 @@ in
     enable = true;
   };
 
-  home.packages = with pkgs; [
-    sops
-    grc
-    lsd
-    starship
-    ripgrep
-    fd
-    nixfmt
-    p7zip
-    dockerfile-language-server
-    htop
-    direnv
-    wild
-    # This is specific for wsl
-    # If we want to switch to a non wsl thinggy it needs to be removed
-    (pkgs.writeShellScriptBin "firefox" ''
-       exec "/mnt/c/Program Files/Mozilla Firefox/firefox.exe" "$@"
+  programs.direnv = {
+    enable = true;
+    silent = true; # avoid direnv messages on shell startup
+  };
+
+  home.packages =
+    with pkgs;
+    [
+      sops
+      grc
+      lsd
+      starship
+      ripgrep
+      fd
+      nixfmt
+      p7zip
+      dockerfile-language-server
+      htop
+      wild
+      # This is specific for wsl
+      # If we want to switch to a non wsl thinggy it needs to be removed
+      (pkgs.writeShellScriptBin "firefox" ''
+        exec "/mnt/c/Program Files/Mozilla Firefox/firefox.exe" "$@"
       '')
-  ] ++ lib.optionals isWork [
-    awscli2
-  ];
+    ]
+    ++ lib.optionals isWork [
+      awscli2
+    ];
 }

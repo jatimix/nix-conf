@@ -27,48 +27,67 @@
     };
   };
 
-  outputs = inputs @ { nixpkgs, home-manager, ... }: {
-    nixosConfigurations = {
-      nagra-wsl = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = with inputs; [
-          sops-nix.nixosModules.sops
-          nixos-wsl.nixosModules.wsl
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
-            networking.hostName = "nagra-wsl";
-            home-manager = {
-              extraSpecialArgs = { inherit inputs; };  # <- ADD THIS
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.bineau = import ./home.nix;
-              sharedModules = [ sops-nix.homeManagerModules.sops ];
-            };
-          }
-        ];
-      };
+  outputs =
+    inputs@{ nixpkgs, home-manager, ... }:
+    {
+      nixosConfigurations = {
+        nagra-wsl = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = with inputs; [
+            sops-nix.nixosModules.sops
+            nixos-wsl.nixosModules.wsl
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+              networking.hostName = "nagra-wsl";
+              home-manager = {
+                extraSpecialArgs = { inherit inputs; }; # <- ADD THIS
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.bineau = import ./home.nix;
+                sharedModules = [ sops-nix.homeManagerModules.sops ];
+              };
+            }
+          ];
+        };
 
-      home-wsl = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = with inputs; [
-          nixos-wsl.nixosModules.wsl
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
-            networking.hostName = "giedi-wsl";
-            home-manager = {
-              extraSpecialArgs = { inherit inputs; };  # <- ADD THIS
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.tim = import ./home.nix;
-              sharedModules = [ sops-nix.homeManagerModules.sops ];
-            };
-          }
-        ];
-      };
-    };
-  };
-}
+        home-wsl = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = with inputs; [
+            nixos-wsl.nixosModules.wsl
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+              networking.hostName = "giedi-wsl";
+              home-manager = {
+                extraSpecialArgs = { inherit inputs; }; # <- ADD THIS
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.tim = import ./home.nix;
+                sharedModules = [ sops-nix.homeManagerModules.sops ];
+              };
+            }
+          ];
+        };
+      }; # nixos configuration
+
+      # Development shell for direnv and nixd
+      devShells.x86_64-linux.default =
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        in
+        pkgs.mkShell {
+          buildInputs = with pkgs; [
+            nixd
+          ];
+
+          shellHook = ''
+            echo "Nix development environment loaded"
+            echo "nixd available for Emacs LSP"
+          '';
+        };
+
+    }; # outputs
+} # flake

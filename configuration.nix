@@ -19,6 +19,16 @@ in
     trusted-users = [ "root" username ]; # Allow this user to modify and access nix store
   };
 
+  # Allow to run UV and other stuff linked on normal linux
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      # Add any missing dynamic libraries for unpackaged programs
+      # here, NOT in environment.systemPackages
+      stdenv.cc.cc
+    ];
+  };
+
   users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "docker" ];
@@ -28,6 +38,7 @@ in
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.droid-sans-mono
+    nerd-fonts.symbols-only
   ];
 
   virtualisation.docker = {

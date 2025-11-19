@@ -1,4 +1,10 @@
-{ config, lib, pkgs, isWork, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  isWork,
+  ...
+}:
 
 let
   token = if isWork then "token_1" else "token_2";
@@ -25,11 +31,11 @@ in
         key = "secrets/token_3/data";
         path = "${config.home.homeDirectory}/.aws/config";
       };
-      read_reg_token = {
-        sopsFile = secretsYaml;
-        format = "yaml";
-        key = "secrets/token_4/data";
-      };
+      # read_reg_token = {
+      #   sopsFile = secretsYaml;
+      #   format = "yaml";
+      #   key = "secrets/token_4/data";
+      # };
     };
   };
 }

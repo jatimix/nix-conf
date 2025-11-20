@@ -119,8 +119,8 @@ in
       bind \en down-or-search
       bind alt-backspace 'backward-kill-word'
       set fish_greeting
+      set -gx READ_REG_TOKEN "$(cat ${config.sops.secrets.read_reg_token.path})"
     '';
-    # set -gx READ_REG_TOKEN "$(cat ${config.sops.secrets.read_reg_token.path})"
     plugins = with pkgs.fishPlugins; [
       {
         name = "grc";
@@ -162,11 +162,14 @@ in
       starship
       ripgrep
       fd
-      nixfmt
       p7zip
-      dockerfile-language-server
+      dockerfile-language-server # For emacs
       htop
-      wild
+      wild # Ultra fast rust linker TODO: remove and put in flake.nix for rust project
+
+      nixd # Nix lsp
+      nixfmt # nix formatter
+
       # This is specific for wsl
       # If we want to switch to a non wsl thinggy it needs to be removed
       (pkgs.writeShellScriptBin "firefox" ''

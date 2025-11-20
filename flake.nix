@@ -74,20 +74,19 @@
       }; # nixos configuration
 
       # Development shell for direnv and nixd
-      devShells.x86_64-linux.default =
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        in
-        pkgs.mkShell {
-          buildInputs = with pkgs; [
-            nixd
-          ];
-
-          shellHook = ''
-            echo "Nix development environment loaded"
-            echo "nixd available for Emacs LSP"
-          '';
-        };
+      # devShells.x86_64-linux.default =
+      #   let
+      #     pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #   in
+      #   pkgs.mkShell {
+      #     buildInputs = with pkgs; [
+      #       nixd
+      #     ];
+      #     shellHook = ''
+      #       echo "Nix development environment loaded"
+      #       echo "nixd available for Emacs LSP"
+      #     '';
+      #   };
 
     }; # outputs
 } # flake

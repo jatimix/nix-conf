@@ -31,11 +31,12 @@ in
         key = "secrets/token_3/data";
         path = "${config.home.homeDirectory}/.aws/config";
       };
-      # read_reg_token = {
-      #   sopsFile = secretsYaml;
-      #   format = "yaml";
-      #   key = "secrets/token_4/data";
-      # };
+      read_reg_token = {
+        sopsFile = secretsYaml;
+        format = "yaml";
+        key = "secrets/token_4/data";
+        path = "${config.sops.defaultSymlinkPath}/read_reg_token";
+      };
     };
   };
 }

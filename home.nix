@@ -98,6 +98,7 @@ in
   home.sessionVariables = {
     EDITOR = "doom-emacs";
     DEFAULT_BROWSER = "firefox";
+    BROWSER = "firefox";
   };
 
   programs.fish = {
@@ -175,8 +176,12 @@ in
       (pkgs.writeShellScriptBin "firefox" ''
         exec "/mnt/c/Program Files/Mozilla Firefox/firefox.exe" "$@"
       '')
+      (pkgs.writeShellScriptBin "explorer" ''
+        exec "/mnt/c/Windows/explorer.exe" "$@"
+      '')
     ]
     ++ lib.optionals isWork [
       awscli2
+      github-copilot-cli
     ];
 }

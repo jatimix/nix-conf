@@ -18,11 +18,11 @@
     "doom-config": {
       "flake": false,
       "locked": {
-        "lastModified": 1763630460,
-        "narHash": "sha256-vtp0GqxNo0GCSKKPSTLoakhE2eq4AWb6Sj8KBBXcyZs=",
+        "lastModified": 1763644840,
+        "narHash": "sha256-9SQZPOVXL2iyOtfz3L9klzm06wSlU4JWe1PHfAyn5DY=",
         "owner": "jatimix",
         "repo": "doom-conf",
-        "rev": "f0ce5d591013cfd4c5e83ff4b351b562345cd4c5",
+        "rev": "7cc2a2258e9ee2680737c0efc0e75c1653a9691d",
         "type": "github"
       },
       "original": {

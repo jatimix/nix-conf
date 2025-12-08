@@ -168,6 +168,8 @@ in
       htop
       wild # Ultra fast rust linker TODO: remove and put in flake.nix for rust project
 
+      gemini-cli # Gemini protocol client
+
       nixd # Nix lsp
       nixfmt # nix formatter
 

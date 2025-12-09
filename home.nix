@@ -120,6 +120,7 @@ in
       bind \en down-or-search
       bind alt-backspace 'backward-kill-word'
       set fish_greeting
+    '' + lib.optionalString isWork ''
       set -gx READ_REG_TOKEN "$(cat ${config.sops.secrets.read_reg_token.path})"
     '';
     plugins = with pkgs.fishPlugins; [
@@ -181,6 +182,9 @@ in
       (pkgs.writeShellScriptBin "explorer" ''
         exec "/mnt/c/Windows/explorer.exe" "$@"
       '')
+    ]
+    ++ lib.optionals (!isWork) [
+      claude-code
     ]
     ++ lib.optionals isWork [
       awscli2

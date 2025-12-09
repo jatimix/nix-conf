@@ -26,6 +26,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs-copilot.url = "github:nixos/nixpkgs/nixos-unstable";
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
   outputs =
@@ -115,8 +116,8 @@
             ./configuration.nix
             home-manager.nixosModules.home-manager
             {
-              nixpkgs.overlays = myOverlays;
               nixpkgs.config.allowUnfree = true;
+              nixpkgs.overlays = [ inputs.emacs-overlay.overlay claude-code.overlays.default myOverlays ];
               networking.hostName = "giedi-wsl";
               home-manager = {
                 extraSpecialArgs = { inherit inputs; };

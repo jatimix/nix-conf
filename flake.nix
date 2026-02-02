@@ -25,6 +25,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-copilot.url = "github:nixos/nixpkgs/nixos-unstable";
   };
 
   outputs =
@@ -69,9 +70,17 @@
         };
       };
 
+      copilotOverlay = final: prev: {
+        github-copilot-cli = (import inputs.nixpkgs-copilot {
+          system = prev.system;
+          config.allowUnfree = true;
+        }).github-copilot-cli;
+      };
+
       # Combine your custom overlays with existing ones (like emacs-overlay)
       myOverlays = [
         geminiCliOverlay
+        copilotOverlay
         inputs.emacs-overlay.overlay
       ];
     in
@@ -86,6 +95,7 @@
             home-manager.nixosModules.home-manager
             {
               nixpkgs.overlays = myOverlays;
+              nixpkgs.config.allowUnfree = true;
               networking.hostName = "nagra-wsl";
               home-manager = {
                 extraSpecialArgs = { inherit inputs; };
@@ -106,6 +116,7 @@
             home-manager.nixosModules.home-manager
             {
               nixpkgs.overlays = myOverlays;
+              nixpkgs.config.allowUnfree = true;
               networking.hostName = "giedi-wsl";
               home-manager = {
                 extraSpecialArgs = { inherit inputs; };

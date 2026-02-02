@@ -13,7 +13,13 @@ in
     #useWindowsDriver = true;
   };
 
+  hardware.graphics.enable = !isWork;
+  hardware.nvidia.datacenter.enable = !isWork;
+  hardware.nvidia-container-toolkit.enable = !isWork;
+
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.nvidia.acceptLicense = !isWork;
+
   nix.settings = {
     experimental-features = "nix-command flakes";
     trusted-users = [ "root" username ]; # Allow this user to modify and access nix store

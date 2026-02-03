@@ -6,7 +6,7 @@ let
 in
 {
   wsl = {
-    enable = true;
+    enable = isWork;
     defaultUser = username;
     interop.includePath = false; # remove windows PATH
     wslConf.user.default = username; # start WSL as this user

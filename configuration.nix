@@ -1,21 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, isWsl ? false, ... }:
 
 let
   isWork = config.networking.hostName == "nagra-wsl";
   username = if isWork then "bineau" else "tim";
 in
 {
-  wsl = {
-    enable = isWork;
-    defaultUser = username;
-    interop.includePath = false; # remove windows PATH
-    wslConf.user.default = username; # start WSL as this user
-    #useWindowsDriver = true;
-  };
-
-  hardware.graphics.enable = !isWork;
-  hardware.nvidia.datacenter.enable = !isWork;
-  hardware.nvidia-container-toolkit.enable = !isWork;
+  hardware.graphics.enable = !isWsl;
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.nvidia.acceptLicense = !isWork;

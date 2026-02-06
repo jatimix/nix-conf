@@ -89,6 +89,7 @@
       nixosConfigurations = {
         nagra-wsl = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { isWsl = true; };
           modules = with inputs; [
             sops-nix.nixosModules.sops
             nixos-wsl.nixosModules.wsl
@@ -98,6 +99,12 @@
               nixpkgs.overlays = myOverlays;
               nixpkgs.config.allowUnfree = true;
               networking.hostName = "nagra-wsl";
+              wsl = {
+                enable = true;
+                defaultUser = "bineau";
+                interop.includePath = false;
+                wslConf.user.default = "bineau";
+              };
               home-manager = {
                 extraSpecialArgs = { inherit inputs; };
                 useGlobalPkgs = true;
@@ -111,6 +118,7 @@
 
         home-wsl = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { isWsl = true; };
           modules = with inputs; [
             nixos-wsl.nixosModules.wsl
             ./configuration.nix
@@ -119,6 +127,12 @@
               nixpkgs.config.allowUnfree = true;
               nixpkgs.overlays = [ inputs.emacs-overlay.overlay claude-code.overlays.default ] ++ myOverlays;
               networking.hostName = "giedi-wsl";
+              wsl = {
+                enable = true;
+                defaultUser = "tim";
+                interop.includePath = false;
+                wslConf.user.default = "tim";
+              };
               home-manager = {
                 extraSpecialArgs = { inherit inputs; };
                 useGlobalPkgs = true;
@@ -133,6 +147,7 @@
         # Desktop configuration (native Linux, not WSL)
         home-desktop = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { isWsl = false; };
           modules = with inputs; [
             sops-nix.nixosModules.sops
             ./configuration.nix

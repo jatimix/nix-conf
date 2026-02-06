@@ -12,6 +12,9 @@
   services.desktopManager.cosmic.enable = true;
   services.displayManager.cosmic-greeter.enable = true;
 
+  # Disable GNOME ssh agent (conflicts with programs.ssh.startAgent)
+  services.gnome.gnome-keyring.enable = lib.mkForce false;
+
   # Nvidia drivers (for consumer GPUs)
   hardware.nvidia = {
     modesetting.enable = true;

@@ -35,13 +35,13 @@ in
     ];
   };
 
-  # Make sure we boot without KMS (the graphic shit for linux kernel which do not support nvidia GPU)
-  boot.kernelParams = lib.mkIf (!isWork) [ “nomodeset” ];
+#  boot.kernelParams = lib.mkIf (!isWork) [ “nomodeset” ];
 
   users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "docker" ];
     shell = pkgs.fish;
+    description = "Tim";
   };
 
   fonts.packages = with pkgs; [

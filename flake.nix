@@ -136,6 +136,7 @@
           modules = with inputs; [
             sops-nix.nixosModules.sops
             ./configuration.nix
+	    ./hardware-configuration.nix
             ./desktop.nix
             home-manager.nixosModules.home-manager
             {

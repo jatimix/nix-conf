@@ -1,0 +1,34 @@
+{ config, lib, pkgs, ... }:
+
+{
+  # Boot loader (UEFI)
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Networking
+  networking.networkmanager.enable = true;
+
+  # COSMIC Desktop Environment (Wayland)
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
+
+  # Nvidia drivers (for consumer GPUs)
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false; # Use proprietary driver
+    nvidiaSettings = true;
+  };
+  hardware.graphics.enable = true;
+
+  # Audio (PipeWire)
+  services.pulseaudio.enable = false;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+}

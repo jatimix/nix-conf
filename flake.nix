@@ -129,6 +129,29 @@
             }
           ];
         };
+
+        # Desktop configuration (native Linux, not WSL)
+        home-desktop = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = with inputs; [
+            sops-nix.nixosModules.sops
+            ./configuration.nix
+            ./desktop.nix
+            home-manager.nixosModules.home-manager
+            {
+              nixpkgs.config.allowUnfree = true;
+              nixpkgs.overlays = [ inputs.emacs-overlay.overlay claude-code.overlays.default myOverlays ];
+              networking.hostName = "giedi-prime";
+              home-manager = {
+                extraSpecialArgs = { inherit inputs; };
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.tim = import ./home.nix;
+                sharedModules = [ sops-nix.homeManagerModules.sops ];
+              };
+            }
+          ];
+        };
       }; # nixos configuration
     }; # outputs
 } # flake

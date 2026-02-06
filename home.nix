@@ -176,12 +176,12 @@ in
 
       # This is specific for wsl
       # If we want to switch to a non wsl thinggy it needs to be removed
-      (pkgs.writeShellScriptBin "firefox" ''
-        exec "/mnt/c/Program Files/Mozilla Firefox/firefox.exe" "$@"
-      '')
-      (pkgs.writeShellScriptBin "explorer" ''
-        exec "/mnt/c/Windows/explorer.exe" "$@"
-      '')
+      # (pkgs.writeShellScriptBin "firefox" ''
+      #   exec "/mnt/c/Program Files/Mozilla Firefox/firefox.exe" "$@"
+      # '')
+      # (pkgs.writeShellScriptBin "explorer" ''
+      #   exec "/mnt/c/Windows/explorer.exe" "$@"
+      # '')
     ]
     ++ lib.optionals (!isWork) [
       claude-code
@@ -189,5 +189,11 @@ in
     ++ lib.optionals isWork [
       awscli2
       github-copilot-cli
+      (pkgs.writeShellScriptBin "firefox" ''
+        exec "/mnt/c/Program Files/Mozilla Firefox/firefox.exe" "$@"
+      '')
+      (pkgs.writeShellScriptBin "explorer" ''
+        exec "/mnt/c/Windows/explorer.exe" "$@"
+      '')
     ];
 }

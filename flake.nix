@@ -117,7 +117,7 @@
             home-manager.nixosModules.home-manager
             {
               nixpkgs.config.allowUnfree = true;
-              nixpkgs.overlays = [ inputs.emacs-overlay.overlay claude-code.overlays.default myOverlays ];
+              nixpkgs.overlays = [ inputs.emacs-overlay.overlay claude-code.overlays.default ] ++ myOverlays;
               networking.hostName = "giedi-wsl";
               home-manager = {
                 extraSpecialArgs = { inherit inputs; };
@@ -141,7 +141,7 @@
             home-manager.nixosModules.home-manager
             {
               nixpkgs.config.allowUnfree = true;
-              nixpkgs.overlays = [ inputs.emacs-overlay.overlay claude-code.overlays.default myOverlays ];
+              nixpkgs.overlays = [ inputs.emacs-overlay.overlay claude-code.overlays.default ] ++ myOverlays;
               networking.hostName = "giedi-prime";
               home-manager = {
                 extraSpecialArgs = { inherit inputs; };

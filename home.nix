@@ -15,14 +15,14 @@ in
 {
   imports = [
     inputs.nix-doom-emacs-unstraightened.homeModule
-    (import ./secrets.nix {
-      inherit
-        config
-        lib
-        pkgs
-        isWork
-        ;
-    })
+    # (import ./secrets.nix {
+    #   inherit
+    #     config
+    #     lib
+    #     pkgs
+    #     isWork
+    #     ;
+    # })
   ];
 
   home.username = username;
@@ -185,6 +185,7 @@ in
     ]
     ++ lib.optionals (!isWork) [
       claude-code
+      firefox
     ]
     ++ lib.optionals isWork [
       awscli2

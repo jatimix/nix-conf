@@ -4,6 +4,7 @@
   # Boot loader (UEFI)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "nomodeset" ];
 
   # Networking
   networking.networkmanager.enable = true;
@@ -15,13 +16,22 @@
   # Disable GNOME ssh agent (conflicts with programs.ssh.startAgent)
   services.gnome.gnome-keyring.enable = lib.mkForce false;
 
+  # For xorg and wayland (even if it's name xserver lol)
+  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.xkb.options = "ctrl:nocaps";
+
+  # for opera
+  services.flatpak.enable = true;
+
   # Nvidia drivers (for consumer GPUs)
   hardware.nvidia = {
     modesetting.enable = true;
     open = false; # Use proprietary driver
     nvidiaSettings = true;
+    # package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
   hardware.graphics.enable = true;
+  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" "nvidia_uvm" ];
 
   # Audio (PipeWire)
   services.pulseaudio.enable = false;

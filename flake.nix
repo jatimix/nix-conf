@@ -49,6 +49,7 @@
           # The lockfile in the source (v0.19.4) differs slightly from what fetchNpmDeps resolves.
           # Since you confirmed the hash is correct, we disable the strict check.
           dontNpmDepsValidate = true;
+	  npmFlags = [ "--legacy-peer-deps" ];
           nativeBuildInputs = [ prev.pkg-config ];
           buildInputs = [ prev.libsecret ];
 
@@ -80,7 +81,7 @@
 
       # Combine your custom overlays with existing ones (like emacs-overlay)
       myOverlays = [
-        geminiCliOverlay
+        #geminiCliOverlay
         copilotOverlay
         inputs.emacs-overlay.overlay
       ];
@@ -149,7 +150,7 @@
           system = "x86_64-linux";
           specialArgs = { isWsl = false; };
           modules = with inputs; [
-            sops-nix.nixosModules.sops
+            # sops-nix.nixosModules.sops
             ./configuration.nix
 	    ./hardware-configuration.nix
             ./desktop.nix
@@ -163,7 +164,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.tim = import ./home.nix;
-                sharedModules = [ sops-nix.homeManagerModules.sops ];
+                # sharedModules = [ sops-nix.homeManagerModules.sops ];
               };
             }
           ];

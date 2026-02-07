@@ -70,7 +70,7 @@ in
   programs.emacs = {
     enable = true;
     #   package = pkgs.emacs-git;
-    package = pkgs.emacs-git.overrideAttrs (old: {
+    package = pkgs.emacs-git-pgtk.overrideAttrs (old: {
       src = inputs.emacs-igc-src;
       buildInputs = old.buildInputs ++ [ pkgs.mps ];
       configureFlags = old.configureFlags ++ [
